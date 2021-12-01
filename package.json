@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ariffb25/melcanz-bot.git"
+    "url": "git+https://github.com/melcanz/melcanz-bot.git"
   },
   "keywords": [
     "bot",
@@ -24,12 +24,12 @@
     "bot",
     "baileys"
   ],
-  "author": "ariffb",
+  "author": "melcanz",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ariffb25/melcanz-bot/issues"
+    "url": "https://github.com/melcanz/melcanz-bot/issues"
   },
-  "homepage": "https://github.com/ariffb25/melcanz-bot#readme",
+  "homepage": "https://github.com/melcanz/melcanz-bot#readme",
   "dependencies": {
     "@adiwajshing/baileys": "github:adiwajshing/baileys",
     "awesome-phonenumber": "^2.62.1",
