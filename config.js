@@ -8,10 +8,10 @@ global.APIs = {
   amel: 'https://melcanz.com',
 }
 global.APIKeys = {
-  'https://melcanz.com': 'amel',
+  'https://melcanz.com': 'trial',
 }
 
-global.packname = '@ariffb.id @melcanz.io'
+global.packname = 'ig @ariffb.id @melcanz.io'
 global.author = '© ariffb & melcanz'
 global.wm = '© ariffb & melcanz'
 global.eror = '_*Error*_'

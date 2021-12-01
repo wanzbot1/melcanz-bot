@@ -1,7 +1,7 @@
 let handler = async function (m) {
   let user = db.data.users[m.sender]
   user.registered = false
-  await this.sendButton(m.chat, `successfully unregistered!`, wm, 'Auto Register', '.autoreg', m)
+  m.reply(`berhasil!`)
 }
 handler.help = ['', 'ister'].map(v => 'unreg' + v)
 handler.tags = ['xp']
