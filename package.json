@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "test.js"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
