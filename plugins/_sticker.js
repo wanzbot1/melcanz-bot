@@ -1,5 +1,4 @@
-const { sticker, sticker5 } = require('../lib/sticker')
-const fetch = require('node-fetch')
+const { sticker } = require('../lib/sticker')
 
 let handler = m => m
 
@@ -15,7 +14,7 @@ handler.all = async function (m) {
         if (/image/.test(mime)) {
             let img = await q.download()
             if (!img) return
-            stiker = await sticker5(img, false, packname, author)
+            stiker = await sticker(img, false, packname, author)
         } else if (/video/.test(mime)) {
             if ((q.msg || q).seconds > 11) return await this.sendButton(m.chat, 'durasi maks 10 detik!', wm, 'matikan stiker otomatis', '.0 stiker', m)
             let img = await q.download()

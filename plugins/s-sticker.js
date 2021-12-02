@@ -1,4 +1,4 @@
-const { sticker, sticker5 } = require('../lib/sticker')
+const { sticker } = require('../lib/sticker')
 
 let handler = async (m, { conn }) => {
     let stiker = false
@@ -7,10 +7,10 @@ let handler = async (m, { conn }) => {
         let mime = (q.msg || q).mimetype || ''
         if (/webp/.test(mime)) {
             let img = await q.download()
-            stiker = await sticker5(img, false, packname, author)
+            stiker = await sticker(img, false, packname, author)
         } else if (/image/.test(mime)) {
             let img = await q.download()
-            stiker = await sticker5(img, false, packname, author)
+            stiker = await sticker(img, false, packname, author)
         } else if (/video/.test(mime)) {
             if ((q.msg || q).seconds > 11) return m.reply('maks 10 detik!')
             let img = await q.download()
@@ -25,7 +25,7 @@ let handler = async (m, { conn }) => {
     finally {
         if (stiker) await conn.sendFile(m.chat, stiker, '', '', m)
         else {
-            await conn.sendButton(m.chat, `balas medianya!`, wm, 'On Automate Sticker', '.1 s', m)
+            await conn.sendButton(m.chat, `balas medianya!`, wm, 'aktifkan stiker otomatis', '.1 s', m)
             throw 0
         }
     }
