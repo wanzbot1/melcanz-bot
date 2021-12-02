@@ -12,10 +12,9 @@ handler.before = async function (m) {
     this.game = this.game ? this.game : {}
     let room = Object.values(this.game).find(room => room.id && room.game && room.state && room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
     if (room) {
-        // m.reply(`[DEBUG]\n${parseInt(m.text)}`)
         if (!/^([1-9]|(me)?nyerah|surr?ender|give up)$/i.test(m.text)) return !0
         isSurrender = !/^[1-9]$/.test(m.text)
-        if (m.sender !== room.game.currentTurn) { // nek wayahku
+        if (m.sender !== room.game.currentTurn) {
             if (!isSurrender) return !0
         }
         if (debugMode) m.reply('[DEBUG]\n' + require('util').format({
@@ -66,13 +65,13 @@ Room ID: ${room.id}
         let users = global.db.data.users
         if ((room.game._currentTurn ^ isSurrender ? room.x : room.o) !== m.chat)
             room[room.game._currentTurn ^ isSurrender ? 'x' : 'o'] = m.chat
-        if (room.x !== room.o) await this.sendButton(room.x, str, wm, isWin || isTie ? 'Tictactoe' : 'Nyerah', 'nyerah', m)
-        await this.sendButton(room.o, str, wm, isWin || isTie ? 'Tictactoe' : 'Nyerah', 'nyerah', m)
+        if (room.x !== room.o) await this.sendButton(room.x, str, wm, isWin || isTie ? 'ttt' : 'nyerah', 'nyerah', m)
+        await this.sendButton(room.o, str, wm, isWin || isTie ? 'ttt' : 'nyerah', 'nyerah', m)
         if (isTie || isWin) {
             users[room.game.playerX].exp += playScore
             users[room.game.playerO].exp += playScore
             if (isWin) users[winner].exp += winScore - playScore
-            if (debugMode) m.reply('[DEBUG]\n' + require('util').format(room))
+            if (debugMode) m.reply('[DEBUG]\n' + this.format(room))
             delete this.game[room.id]
         }
     }

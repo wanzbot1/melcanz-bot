@@ -17,7 +17,7 @@ handler.all = async function (m) {
             if (!img) return
             stiker = await sticker5(img, false, packname, author)
         } else if (/video/.test(mime)) {
-            if ((q.msg || q).seconds > 11) return await this.sendButton(m.chat, 'durasi maks 10 detik!', wm, 'matika fitur ini', '.0 stiker', m)
+            if ((q.msg || q).seconds > 11) return await this.sendButton(m.chat, 'durasi maks 10 detik!', wm, 'matikan stiker otomatis', '.0 stiker', m)
             let img = await q.download()
             if (!img) return
             stiker = await sticker(img, false, packname, author)

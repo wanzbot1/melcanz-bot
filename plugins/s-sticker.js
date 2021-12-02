@@ -7,41 +7,32 @@ let handler = async (m, { conn }) => {
         let mime = (q.msg || q).mimetype || ''
         if (/webp/.test(mime)) {
             let img = await q.download()
-            if (!img) throw `reply sticker with command s`
             stiker = await sticker5(img, false, packname, author)
         } else if (/image/.test(mime)) {
             let img = await q.download()
-            if (!img) throw `reply image with command s`
             stiker = await sticker5(img, false, packname, author)
         } else if (/video/.test(mime)) {
-            if ((q.msg || q).seconds > 11) return m.reply('max is 10 seconds!')
+            if ((q.msg || q).seconds > 11) return m.reply('maks 10 detik!')
             let img = await q.download()
-            if (!img) throw `reply video with command s`
             stiker = await sticker(img, false, packname, author)
         } else if (m.quoted.text) {
-            if (isUrl(m.quoted.text)) stiker = await sticker(false, m.quoted.text, packname, author)
-            else throw 'URL is not valid! end with jpg/gif/png'
+            if (isUrl(m.quoted.text)) stiker = await sticker(false, text, packname, author)
+            else throw 'URL tidak valid! akhiri dengan jpg/gif/png'
         }
     } catch (e) {
         throw e
     }
     finally {
-        if (stiker) {
-            let { key } = await conn.sendMessage(m.chat, stiker, 'stickerMessage', { quoted: m })
-            setTimeout(() => {
-                if (db.data.chats[m.chat].deletemedia) conn.deleteMessage(m.chat, key)
-            }, db.data.chats[m.chat].deletemediaTime)
-        }
+        if (stiker) await conn.sendFile(m.chat, stiker, '', '', m)
         else {
-            await conn.sendButton(m.chat, `reply media with command s`, wm, 'On Automate Sticker', '.1 s', m)
+            await conn.sendButton(m.chat, `balas medianya!`, wm, 'On Automate Sticker', '.1 s', m)
             throw 0
         }
     }
 }
-handler.help = ['s']
+handler.help = ['stiker ', 'stiker <url>']
 handler.tags = ['sticker']
-handler.customPrefix = /^s$/i
-handler.command = new RegExp
+handler.command = /^s(tic?ker)?(gif)?(wm)?$/i
 
 module.exports = handler
 

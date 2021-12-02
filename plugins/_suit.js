@@ -16,7 +16,6 @@ handler.before = async function (m) {
             room.status = 'play'
             room.asal = m.chat
             clearTimeout(room.waktu)
-            //delete room[room.id].waktu
             m.reply(`
 pesan telah dikirimkan ke chat
 

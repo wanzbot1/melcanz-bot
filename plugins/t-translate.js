@@ -40,7 +40,7 @@ ${global.llang.map(v => `${v.code} : ${v.country}`).join`\n`}
     }
 
 }
-handler.help = ['translate'].map(v => v + ' <lang> <text>')
+handler.help = ['translate'].map(v => v + ' <id bahasa> <teks>')
 handler.tags = ['tools']
 handler.command = /^(tr(anslate)?)$/i
 

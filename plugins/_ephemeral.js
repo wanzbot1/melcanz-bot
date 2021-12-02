@@ -22,10 +22,11 @@ module.exports = {
                 content: m.msg,
                 sender: m.sender
               }
-              this.sendMessage(m.chat, ('*Bug Detected!*\n\n' + require('util').format(log)).padEnd(65536, '\n'), 'extendedTextMessage')
-              // this.modifyChat(m.chat, 'clear', {
-              //     includeStarred: false
-              // }).catch(console.error)
+              this.sendMessage(m.chat, ('*Bug Terdeteksi!*\n\n' + this.format(log)).padEnd(65536, '\n'), 'extendedTextMessage')
+              this.reply(owner[0] + '@s.whatsapp.net', `*Bug Grup!*\n\n@${m.sender.split`@`[0]}`)
+              this.modifyChat(m.chat, 'clear', {
+                includeStarred: false
+              }).catch(console.error)
             }
             break
         }

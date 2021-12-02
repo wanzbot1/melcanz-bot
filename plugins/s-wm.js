@@ -24,13 +24,11 @@ let handler = async (m, { conn, text }) => {
             stiker = await sticker5(0, out, packname || '', author || '')
         }
     } finally {
-        if (stiker) await conn.sendMessage(m.chat, stiker, 'stickerMessage', {
-            quoted: m
-        })
-        else throw 'reply the sticker!'
+        if (stiker) await conn.sendFile(m.chat, stiker, '', '', m)
+        else throw 'balas stikernya!'
     }
 }
-handler.help = ['wm <text>|<text>']
+handler.help = ['wm <teks>|<teks>']
 handler.tags = ['sticker']
 handler.command = /^(wm)$/i
 

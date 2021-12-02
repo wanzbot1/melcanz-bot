@@ -9,11 +9,17 @@ let handler = async (m, { conn, text }) => {
       limit: 10,
       registered: false,
       name: conn.getName(m.sender),
-      nim: -1,
+      age: -1,
       regTime: -1,
+      afk: -1,
+      afkReason: '',
+      autolevelup: false,
       banned: false,
+      level: 0,
       premium: false,
       premiumTime: 0,
+      role: '',
+      sw: false,
     }
   }
   try {
@@ -22,23 +28,20 @@ let handler = async (m, { conn, text }) => {
 
   } finally {
     let about = (await conn.getStatus(who).catch(console.error) || {}).status || ''
-    let { name, limit, exp, registered, regTime, nim, banned, premium, premiumTime } = global.db.data.users[who]
+    let { name, limit, exp, registered, regTime, age, banned, premium, premiumTime, role } = global.db.data.users[who]
     let username = conn.getName(who)
     let str = `
-Name: ${username} ${registered ? '(' + name + ') ' : ''}(@${who.replace(/@.+/, '')})${about != 401 ? '\nInfo: ' + about : ''}
-Number: ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
-Link: https://wa.me/${who.split`@`[0]}${registered ? '\nNIM: ' + nim : ''}
+Nama: ${username} ${registered ? '(' + name + ') ' : ''}(@${who.replace(/@.+/, '')})${about != 401 ? '\nInfo: ' + about : ''}
+Nomor: ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
+Link: https://wa.me/${who.split`@`[0]}${registered ? '\nUmur: ' + age : ''}
 XP: ${exp}
 Limit: ${limit}
-Registered: ${registered ? 'Yes' : 'No'}
-Premium: ${premium ? `Yes\nPremium Expired: ${conn.msToDate(premiumTime - new Date() * 1)}` : 'No'}
-Banned: ${banned ? 'Yes' : 'No'}
+Role: ${role}
+Daftar: ${registered ? '✅' : '❌'}
+Premium: ${premium ? `✅\nPremium Expired: ${conn.msToDate(premiumTime - new Date() * 1)}` : '❌'}
+Banned: ${banned ? '✅' : '❌'}
 `.trim()
-    let mentionedJid = [who]
-    let { key } = await conn.sendFile(m.chat, pp, 'pp.jpg', str, m, false, { contextInfo: { mentionedJid } })
-    setTimeout(() => {
-      if (db.data.chats[m.chat].deletemedia) conn.deleteMessage(m.chat, key)
-    }, db.data.chats[m.chat].deletemediaTime)
+    await conn.sendFile(m.chat, pp, 'pp.jpg', str, m)
   }
 }
 handler.help = ['profile [@user]']

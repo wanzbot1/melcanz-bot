@@ -2,9 +2,9 @@ let { webp2mp4 } = require('../lib/webp2mp4')
 let { ffmpeg } = require('../lib/converter')
 
 let handler = async (m, { conn, usedPrefix, command }) => {
-    if (!m.quoted) throw `reply sticker/audio with command ${usedPrefix + command}`
+    if (!m.quoted) throw `balas stiker/audio dengan perintah ${usedPrefix + command}`
     let mime = m.quoted.mimetype || ''
-    if (!/webp|audio/.test(mime)) throw `reply sticker/audio with command ${usedPrefix + command}`
+    if (!/webp|audio/.test(mime)) throw `balas stiker/audio dengan perintah ${usedPrefix + command}`
     let media = await m.quoted.download()
     let out = Buffer.alloc(0)
     if (/webp/.test(mime)) {
@@ -18,7 +18,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
             '-shortest'
         ], 'mp3', 'mp4')
     }
-    await conn.sendFile(m.chat, out, 'out.mp4', '', m, 0, { thumbnail: out })
+    await conn.sendFile(m.chat, out, 'out.mp4', wm, m, 0, { thumbnail: out })
 }
 handler.help = ['tovideo']
 handler.tags = ['sticker']

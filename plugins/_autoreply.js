@@ -11,7 +11,7 @@ handler.all = async function (m) {
     }
 
     if (/^bot$/i.test(m.text)) {
-        await this.sendButton(m.chat, m.isGroups && !m.isPrems && group ? 'group only' : isBanned ? 'chat banned' : banned ? 'user banned' : 'active', wm, m.isGroups && !m.isPrems && group ? 'Donate' : isBanned ? 'Unban' : banned ? 'ask to owner to unban' : 'Donate', m.isGroups && !m.isPrems && group ? '.donatebot' : isBanned ? '.unban' : banned ? '.owner' : '.donatebot', m)
+        await this.sendButton(m.chat, !(m.isGroup || m.isPrems) && group ? 'hanya grup' : isBanned ? 'chat banned' : banned ? 'user banned' : 'aktif', wm, !(m.isGroup || m.isPrems) && group ? 'donasi' : isBanned ? 'unban' : banned ? 'minta owner kalo mau di unban' : 'donasi', !(m.isGroup || m.isPrems) && group ? '.donasi' : isBanned ? '.unban' : banned ? '.owner' : '.donasi', m)
     }
 
     return !0

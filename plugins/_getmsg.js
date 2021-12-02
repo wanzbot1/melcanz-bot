@@ -2,8 +2,7 @@ let handler = m => m
 
 handler.before = async function (m, { isROwner }) {
     let chat = db.data.chats[m.chat]
-    if (m.chat.endsWith('broadcast') || !chat.getmsg || chat.isBanned || db.data.users[m.sender].banned) return
-    if (m.isBaileys) return
+    if (m.chat.endsWith('broadcast') || !chat.getmsg || chat.isBanned || db.data.users[m.sender].banned || m.isBaileys) return
     let msgs = db.data.msgs
     if (!(m.text in msgs)) return
     if (msgs[m.text].locked) if (!isROwner) {

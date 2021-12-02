@@ -1,12 +1,11 @@
 const { spawn } = require('child_process')
-const util = require('util')
 const { MessageType } = require('@adiwajshing/baileys')
 
 let handler = async (m, { conn, usedPrefix, command }) => {
   if (!global.support.convert &&
     !global.support.magick &&
     !global.support.gm) return handler.disabled = true // Disable if doesnt support
-  if (!m.quoted) throw `reply sticker with command ${usedPrefix + command}`
+  if (!m.quoted) throw `balas stiker dengan perintah ${usedPrefix + command}`
   let q = { message: { [m.quoted.mtype]: m.quoted } }
   if (/sticker/.test(m.quoted.mtype)) {
     let sticker = await conn.downloadM(q)
@@ -14,15 +13,12 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     let bufs = []
     const [_spawnprocess, ..._spawnargs] = [...(global.support.gm ? ['gm'] : global.support.magick ? ['magick'] : []), 'convert', 'webp:-', 'png:-']
     let im = spawn(_spawnprocess, _spawnargs)
-    im.on('error', e => conn.reply(m.chat, util.format(e), m))
+    im.on('error', e => conn.reply(m.chat, conn.format(e), m))
     im.stdout.on('data', chunk => bufs.push(chunk))
     im.stdin.write(sticker)
     im.stdin.end()
     im.on('exit', async () => {
-      let { fromMe, id, chat: remoteJid } = await conn.sendMessage(m.chat, Buffer.concat(bufs), MessageType.image, { quoted: m })
-      setTimeout(() => {
-        if (db.data.chats[m.chat].deletemedia) conn.deleteMessage(m.chat, { fromMe, id, remoteJid })
-      }, db.data.chats[m.chat].deletemediaTime)
+      await conn.sendMessage(m.chat, Buffer.concat(bufs), MessageType.image, { quoted: m, caption: wm })
     })
   }
 }
