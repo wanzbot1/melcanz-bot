@@ -191,6 +191,14 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
       }
       conn.callWhitelistMode = isEnable
       break
+    case 'anon':
+      isAll = true
+      if (!isOwner) {
+        dfail('owner', m, conn)
+        throw false
+      }
+      set.anon = isEnable
+      break
     case 'anticall':
       isAll = true
       if (!isOwner) {
@@ -287,7 +295,7 @@ ${usedPrefix}off welcome
       throw false
   }
   m.reply(`
-*${type}* berhasil di *${isEnable ? 'on' : 'off'}* ${isAll ? 'untuk bot ini' : isUser ? '' : 'untuk chat ini'}
+*${type}* berhasil di *${isEnable ? 'nyalakan' : 'matikan'}* ${isAll ? 'untuk bot ini' : isUser ? '' : 'untuk chat ini'}
 `.trim())
 }
 handler.help = ['on', 'off'].map(v => v + ' <option>')

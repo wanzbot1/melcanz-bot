@@ -109,6 +109,7 @@ module.exports = {
         let settings = global.db.data.settings[this.user.jid]
         if (typeof settings !== 'object') global.db.data.settings[this.user.jid] = {}
         if (settings) {
+          if (!'anon' in settings) settings.anon = true
           if (!'anticall' in settings) settings.anticall = true
           if (!'antispam' in settings) settings.antispam = true
           if (!'antitroli' in settings) settings.antitroli = true
@@ -121,6 +122,7 @@ module.exports = {
           if (!('tosw' in settings)) settings.tosw = '6283128734012@s.whatsapp.net'
           if (!('playlist' in settings)) settings.playlist = ['37i9dQZEVXbObFQZ3JLcXt', '37i9dQZF1DXa2EiKmMLhFD']
         } else global.db.data.settings[this.user.jid] = {
+          anon: true,
           anticall: true,
           antispam: true,
           antitroli: true,
@@ -229,7 +231,7 @@ module.exports = {
             let chat = global.db.data.chats[m.chat]
             let user = global.db.data.users[m.sender]
             let set = global.db.data.settings[this.user.jid]
-            if (!(isPrems || isEra) && !m.isGroup && set.group) return
+            if ((!isPrems || !m.isGroup) && set.group) return
             if (!(['g-enable.js', 'o-unbanchat.js', 'i-donate.js', 'i-owner.js', 'i-info.js'].includes(name) || isPrems) && chat && chat.isBanned) return
             if (!(['g-enable.js', 'o-unbanchat.js', 'i-donate.js', 'i-owner.js', 'i-info.js'].includes(name) || isPrems) && user && user.banned) return
           }
@@ -388,7 +390,21 @@ module.exports = {
             } finally {
               text = (action === 'add' ? (chat.sWelcome || this.welcome || conn.welcome || 'selamat datang, @user!').replace('@subject', this.getName(jid)).replace('@desc', groupMetadata.desc ? String.fromCharCode(8206).repeat(4001) + groupMetadata.desc : '') :
                 (chat.sBye || this.bye || conn.bye || 'sampai jumpa, @user!')).replace(/@user/g, '@' + user.split('@')[0])
-              await this.sendButtonLoc(jid, await (await fetch(fla + (action === 'add' ? 'welcome' : 'goodbye'))).buffer(), text, wm, action === 'add' ? 'selamat datang' : 'sampai jumpa', 'ariffb')
+              let wel = API('amel', '/welcome2', {
+                username: this.getName(user),
+                groupname: this.getName(jid),
+                membercount: groupMetadata.participants.length,
+                profile: pp,
+                background: 'https://i.ibb.co/KhtRxwZ/dark.png'
+              }, 'apikey')
+              let lea = API('amel', '/goodbye2', {
+                username: this.getName(user),
+                groupname: this.getName(jid),
+                membercount: groupMetadata.participants.length,
+                profile: pp,
+                background: 'https://i.ibb.co/KhtRxwZ/dark.png'
+              }, 'apikey')
+              await this.sendButtonLoc(jid, action === 'add' ? wel : lea, text, wm, action === 'add' ? 'selamat datang' : 'sampai jumpa', 'ariffb')
             }
           }
         }
@@ -441,7 +457,7 @@ terdeteksi @${m.participant.split`@`[0]} menghapus pesan
 
 ${desc}
         `.trim()
-    this.sendButton(jid, caption, wm, 'matika fitur ini', '.0 desc')
+    this.sendButton(jid, caption, wm, 'matikan fitur ini', '.0 desc')
 
   }
 }

@@ -11,11 +11,11 @@ async function handler(m) {
     let res = await fetch(API('amel', '/game/family100', {}, 'apikey'))
     if (!res.ok) throw eror
     let json = await res.json()
-    if (json.status != 200) throw json
+    if (!json.status) throw json
     let caption = `
-*Soal:* ${json.result.soal}
+*soal:* ${json.result.soal}
 
-Terdapat *${json.result.jawaban.length}* jawaban${json.result.jawaban.find(v => v.includes(' ')) ? `
+terdapat *${json.result.jawaban.length}* jawaban${json.result.jawaban.find(v => v.includes(' ')) ? `
 (beberapa jawaban terdapat spasi)
 
 +500 XP tiap jawaban benar
@@ -23,7 +23,7 @@ Terdapat *${json.result.jawaban.length}* jawaban${json.result.jawaban.find(v => 
     `.trim()
     this.game[id] = {
         id,
-        msg: await this.sendButton(m.chat, caption, wm, 'Nyerah', 'nyerah', m),
+        msg: await this.sendButton(m.chat, caption, wm, 'nyerah', 'nyerah', m),
         ...json,
         terjawab: Array.from(json.result.jawaban, () => false),
         winScore,
@@ -34,6 +34,5 @@ handler.tags = ['game']
 handler.command = /^f(amily)?100$/i
 
 handler.game = true
-handler.limit = true
 
 module.exports = handler

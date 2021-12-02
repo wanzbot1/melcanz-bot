@@ -22,19 +22,19 @@ module.exports = {
         }
         let isWin = room.terjawab.length === room.terjawab.filter(v => v).length
         let caption = `
-*Soal:* ${room.soal}
+*soal:* ${room.result.soal}
 
-Terdapat *${room.result.jawaban.length}* jawaban${room.result.jawaban.find(v => v.includes(' ')) ? `
+terdapat *${room.result.jawaban.length}* jawaban${room.result.jawaban.find(v => v.includes(' ')) ? `
 (beberapa jawaban terdapat spasi)
 `: ''}
 ${isWin ? `*SEMUA JAWABAN TERJAWAB*` : isSurrender ? '*MENYERAH!*' : ''}
-${Array.from(room.jawaban, (jawaban, index) => {
+${Array.from(room.result.jawaban, (jawaban, index) => {
             return isSurrender || room.terjawab[index] ? `(${index + 1}) ${jawaban} ${room.terjawab[index] ? '@' + room.terjawab[index].split`@`[0] : ''}`.trim() : false
         }).filter(v => v).join('\n')}
 
 ${isSurrender ? '' : ``}
     `.trim()
-        await this.sendButton(m.chat, caption, wm, `${isWin || isSurrender ? 'Mulai lagi' : 'Nyerah'}`, `${isWin || isSurrender ? '.family100' : 'nyerah'}`, m).then(msg => {
+        await this.sendButton(m.chat, caption, wm, `${isWin || isSurrender ? 'lagi' : 'nyerah'}`, `${isWin || isSurrender ? '.family100' : 'nyerah'}`, m).then(msg => {
             return this.game[id].msg = msg
         }).catch(_ => _)
         if (isWin || isSurrender) delete this.game[id]

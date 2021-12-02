@@ -5,4 +5,4 @@ node_modules
 # file
 package-lock.json
 database.json
-session-data.json
+session.data.json

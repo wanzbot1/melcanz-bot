@@ -56,6 +56,7 @@ global.loadDatabase = async function loadDatabase() {
     stats: {},
     msgs: {},
     sticker: {},
+    settings: {},
     ...(global.db.data || {})
   }
   global.db.chain = _.chain(global.db.data)
@@ -64,7 +65,7 @@ loadDatabase()
 
 global.conn = new WAConnection()
 conn.browserDescription = ['Melcanz-bot', 'Chrome', '3.0']
-let authFile = `${opts._[0] || 'session'}.data.json`
+let authFile = opts['session'] ? opts['session'] + '.json' : `session.data.json`
 if (fs.existsSync(authFile)) conn.loadAuthInfo(authFile)
 if (opts['trace']) conn.logger.level = 'trace'
 if (opts['debug']) conn.logger.level = 'debug'
