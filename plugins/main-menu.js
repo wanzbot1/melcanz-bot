@@ -1,6 +1,5 @@
 let fs = require('fs')
 let path = require('path')
-let fetch = require('node-fetch')
 let moment = require('moment-timezone')
 const defaultMenu = {
   before: `
@@ -53,8 +52,14 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
     let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
     let tags
     let teks = `${text}`.toLowerCase()
-    let arrayMenu = ['list', 'all', 'absen', 'audio', 'bot', 'database', 'fun', 'grup', 'games', 'info', 'internet', 'stiker', 'tools', 'no category', 'xp', 'owner']
-    if (!arrayMenu.includes(teks)) teks = 'list'
+    /**
+     * arrayMenu
+     * @param {Array} 
+     * kalo ga ada didaftar ini ga bisa dipanggil, jadi harus diisi
+     */
+    let arrayMenu = ['list', 'all', 'absen', 'audio', 'database', 'fun', 'grup', 'games', 'info', 'internet', 'jadibot', 'stiker', 'tools', 'tanpa kategori', 'xp', 'owner']
+    if (!arrayMenu.includes(teks)) teks = 'list' // kalo teks da ada di arrayMenu maka bakal nampilin list
+    // buat 1 per 1 sesuai yang ada di arrayMenu
     if (teks == 'all') tags = {
       'main': 'Main',
       'absen': 'Absen',
@@ -65,7 +70,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       'group': 'Grup',
       'info': 'Info',
       'internet': 'Internet',
-      'jadibot': 'Become a Bot',
+      'jadibot': 'Jadi Bot',
       'sticker': 'Stiker',
       'tools': 'Tools',
       'vote': 'Voting',
@@ -76,11 +81,11 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       'absen': 'Absen',
       'vote': 'Voting',
     }
-    if (teks == 'grup') tags = {
-      'group': 'Grup'
-    }
     if (teks == 'audio') tags = {
       'audio': 'Pengubah Suara'
+    }
+    if (teks == 'grup') tags = {
+      'group': 'Grup'
     }
     if (teks == 'database') tags = {
       'database': 'Database'
@@ -103,7 +108,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
     if (teks == 'internet') tags = {
       'internet': 'Internet'
     }
-    if (teks == 'bot') {
+    if (teks == 'jadibot') {
       if (!db.data.settings[conn.user.jid].jadibot) {
         m.reply('mau ngapain?')
         throw false
@@ -121,7 +126,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
     if (teks == 'xp') tags = {
       'xp': 'Exp & Limit'
     }
-    if (teks == 'no category') tags = {
+    if (teks == 'tanpa kategori') tags = {
       '': 'Tanpa Kategori'
     }
     if (teks == 'owner') {
@@ -135,7 +140,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
         'advanced': 'Advanced'
       }
     }
-    if (teks == 'list') {
+    if (teks == 'list') { // kalo teks ga sesuai arrayMenu bakal nampilin ini
       m.reply(`
 ┌「 Menu 」\n${arrayMenu.filter(v => !['list'].includes(v)).map(v => '├ ' + _p + command + ' ' + v).join`\n`}
 └────
@@ -195,7 +200,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       readmore: readMore
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
-    await conn.sendButtonLoc(m.chat, teks == 'erajaya' ? 'https://www.moneter.id/uploads/1634fc5c66eb7ccc1537d91f4425e705.jpg' : fla + encodeURIComponent(teks), text.trim(), `${ucapan()}${db.data.chats[m.chat].deletemedia ? `, delete after ${db.data.chats[m.chat].deletemediaTime / 1000} s` : ''}`, 'Donate', '.donasi')
+    await conn.sendButtonLoc(m.chat, fla + encodeURIComponent(teks), text.trim(), `${ucapan()}`, 'donasi', '.donasi')
   } catch (e) {
     // conn.reply(m.chat, 'Maaf, menu sedang error', m)
     throw e
@@ -219,18 +224,18 @@ function clockString(ms) {
 
 function ucapan() {
   const time = moment.tz('Asia/Jakarta').format('HH')
-  res = "sleep well, i love u"
+  res = "tidur banh, i love u"
   if (time >= 4) {
-    res = "good morning"
+    res = "selamat pagi"
   }
   if (time > 10) {
-    res = "good afternoon"
+    res = "selamat sialng"
   }
   if (time >= 15) {
-    res = "good afternoon"
+    res = "selamat sore"
   }
   if (time >= 18) {
-    res = "good night"
+    res = "selamat malam"
   }
   return res
 }
