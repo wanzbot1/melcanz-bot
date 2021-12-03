@@ -53,44 +53,45 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
     let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
     let tags
     let teks = `${text}`.toLowerCase()
-    let arrayMenu = ['list', 'all', 'attendance', 'audio', 'bot', 'bsi', 'database', 'erajaya', 'group', 'games', 'info', 'internet', 'sticker', 'tools', 'no category', 'xp', 'owner']
+    let arrayMenu = ['list', 'all', 'absen', 'audio', 'bot', 'database', 'fun', 'grup', 'games', 'info', 'internet', 'stiker', 'tools', 'no category', 'xp', 'owner']
     if (!arrayMenu.includes(teks)) teks = 'list'
     if (teks == 'all') tags = {
       'main': 'Main',
-      'absen': 'Attendance',
-      'audio': 'Audio Changer',
+      'absen': 'Absen',
+      'audio': 'Pengubah Suara',
       'database': 'Database',
-      'game': `Game`,
-      'group': 'Group',
+      'fun': 'Fun',
+      'game': `Games`,
+      'group': 'Grup',
       'info': 'Info',
       'internet': 'Internet',
       'jadibot': 'Become a Bot',
-      'sticker': 'Sticker',
+      'sticker': 'Stiker',
       'tools': 'Tools',
       'vote': 'Voting',
       'xp': 'Exp & Limit',
-      // '': 'No Category',
+      '': 'Tanpa Kategori',
     }
-    if (teks == 'attendance') tags = {
-      'absen': 'Attendance',
+    if (teks == 'absen') tags = {
+      'absen': 'Absen',
       'vote': 'Voting',
     }
-    if (teks == 'group') tags = {
-      'group': 'Group'
+    if (teks == 'grup') tags = {
+      'group': 'Grup'
     }
     if (teks == 'audio') tags = {
-      'audio': 'Audio Changer'
-    }
-    if (teks == 'bsi') tags = {
-      'bsi': 'UBSI',
+      'audio': 'Pengubah Suara'
     }
     if (teks == 'database') tags = {
       'database': 'Database'
     }
+    if (teks == 'fun') tags = {
+      'fun': 'Fun',
+    }
     if (teks == 'games') {
       if (!db.data.settings[conn.user.jid].game) {
-        await conn.sendButton(m.chat, 'game mode is not active!', wm, 'On Game', '.1 game', m)
-        throw false
+        await conn.sendButton(m.chat, 'game blm diaktifkan oleh owner!', wm, 'nyalakan', '.1 game', m)
+        throw 0
       }
       tags = {
         'game': 'Games'
@@ -104,15 +105,15 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
     }
     if (teks == 'bot') {
       if (!db.data.settings[conn.user.jid].jadibot) {
-        m.reply('nothing to do here.')
+        m.reply('mau ngapain?')
         throw false
       }
       tags = {
-        'jadibot': 'Become a Bot'
+        'jadibot': 'Jadi Bot'
       }
     }
-    if (teks == 'sticker') tags = {
-      'sticker': 'Sticker',
+    if (teks == 'stiker') tags = {
+      'sticker': 'Stiker',
     }
     if (teks == 'tools') tags = {
       'tools': 'Tools'
@@ -121,15 +122,12 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       'xp': 'Exp & Limit'
     }
     if (teks == 'no category') tags = {
-      '': 'No Category'
-    }
-    if (teks == 'erajaya') tags = {
-      'erajaya': 'Erajaya'
+      '': 'Tanpa Kategori'
     }
     if (teks == 'owner') {
       if (!isOwner) {
         dfail('owner', m, conn)
-        throw false
+        throw 0
       }
       tags = {
         'owner': 'Owner',
@@ -138,13 +136,10 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       }
     }
     if (teks == 'list') {
-      let { key } = await m.reply(`
-┌「 Menu 」\n${arrayMenu.filter(v => !['list', 'bot', 'bsi', 'no category'].includes(v)).map(v => '├ ' + _p + command + ' ' + v).join`\n`}
+      m.reply(`
+┌「 Menu 」\n${arrayMenu.filter(v => !['list'].includes(v)).map(v => '├ ' + _p + command + ' ' + v).join`\n`}
 └────
 `.trim())
-      setTimeout(() => {
-        if (db.data.chats[m.chat].deletemedia) conn.deleteMessage(m.chat, key)
-      }, db.data.chats[m.chat].deletemediaTime)
       throw 0
     }
     let help = Object.values(global.plugins).filter(plugin => !plugin.disabled).map(plugin => {
@@ -200,10 +195,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       readmore: readMore
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
-    let { key } = await conn.sendButtonLoc(m.chat, teks == 'erajaya' ? 'https://www.moneter.id/uploads/1634fc5c66eb7ccc1537d91f4425e705.jpg' : fla + encodeURIComponent(teks), text.trim(), `${ucapan()}${db.data.chats[m.chat].deletemedia ? `, delete after ${db.data.chats[m.chat].deletemediaTime / 1000} s` : ''}`, 'Donate', '.donatebot')
-    setTimeout(() => {
-      if (db.data.chats[m.chat].deletemedia) conn.deleteMessage(m.chat, key)
-    }, db.data.chats[m.chat].deletemediaTime)
+    await conn.sendButtonLoc(m.chat, teks == 'erajaya' ? 'https://www.moneter.id/uploads/1634fc5c66eb7ccc1537d91f4425e705.jpg' : fla + encodeURIComponent(teks), text.trim(), `${ucapan()}${db.data.chats[m.chat].deletemedia ? `, delete after ${db.data.chats[m.chat].deletemediaTime / 1000} s` : ''}`, 'Donate', '.donasi')
   } catch (e) {
     // conn.reply(m.chat, 'Maaf, menu sedang error', m)
     throw e
