@@ -11,4 +11,4 @@ handler.help = ['waifu']
 handler.tags = ['fun']
 handler.command = /^(waifu)$/i
 
-module.export = handler
+module.exports = handler

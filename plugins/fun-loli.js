@@ -11,4 +11,4 @@ handler.help = ['loli']
 handler.tags = ['fun']
 handler.command = /^(loli)$/i
 
-module.export = handler
+module.exports = handler

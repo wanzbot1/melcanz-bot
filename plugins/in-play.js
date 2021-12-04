@@ -3,11 +3,10 @@ let yts = require('yt-search')
 let fetch = require('node-fetch')
 
 let handler = async (m, { conn, command, text, usedPrefix }) => {
-  if (!text) throw `uhm.. where the text?\n\nexample:\n${usedPrefix + command} toxic friends`
+  if (!text) throw `uhm.. cari apa?\n\ncontoh:\n${usedPrefix + command} toxic friends`
   let results = await yts(text)
   let vid = results.all.find(video => video.seconds < 3600)
-  if (!vid) throw 'Konten Tidak ditemukan'
-  let isVideo = /2$/.test(command)
+  if (!vid) throw 'konten tidak ditemukan'
   let yt = false
   let yt2 = false
   let usedServer = servers[0]
@@ -25,15 +24,13 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
   if (yt === false || yt2 === false) throw 'all servers failed!'
   let { dl_link, thumb, title, filesize, filesizeF } = yt
   await conn.send2ButtonLoc(m.chat, thumb, `
-*Title:* ${title}
-*Server y2mate:* ${usedServer}
-`.trim(), wm, `Audio (${filesizeF})`, `${vid.url}`, `Video (${yt2.filesizeF})`, `${vid.url} mp4`, m)
+*judul:* ${title}
+*server y2mate:* ${usedServer}
+`.trim(), wm, `audio (${filesizeF})`, '.yta ' + vid.url, `video (${yt2.filesizeF})`, '.yt ' + vid.url, m)
 }
-handler.help = ['play'].map(v => v + ' <text>')
-handler.tags = ['internet']
+handler.help = ['play'].map(v => v + ' <teks>')
+handler.tags = ['internet', 'download']
 handler.command = /^(p|play)$/i
-
-handler.exp = 0
 
 module.exports = handler
 

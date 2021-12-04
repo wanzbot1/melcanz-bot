@@ -4,7 +4,7 @@ let moment = require('moment-timezone')
 const defaultMenu = {
   before: `
 %readmore`.trimStart(),
-  header: '┌「 %category 」',
+  header: '┌「 *%category* 」',
   body: '├ %cmd %islimit %isPremium',
   footer: '└────\n',
   after: `
@@ -57,7 +57,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
      * @param {Array} 
      * kalo ga ada didaftar ini ga bisa dipanggil, jadi harus diisi
      */
-    let arrayMenu = ['list', 'all', 'absen', 'audio', 'database', 'fun', 'grup', 'games', 'info', 'internet', 'jadibot', 'stiker', 'tools', 'tanpa kategori', 'xp', 'owner']
+    let arrayMenu = ['list', 'all', 'absen', 'audio', 'database', 'download', 'fun', 'grup', 'games', 'info', 'internet', 'jadibot', 'stiker', 'tools', 'tanpa kategori', 'xp', 'owner']
     if (!arrayMenu.includes(teks)) teks = 'list' // kalo teks da ada di arrayMenu maka bakal nampilin list
     // buat 1 per 1 sesuai yang ada di arrayMenu
     if (teks == 'all') tags = {
@@ -65,7 +65,8 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       'absen': 'Absen',
       'audio': 'Pengubah Suara',
       'database': 'Database',
-      'fun': 'Fun',
+      'download': 'Downloader',
+      'fun': 'fun',
       'game': `Games`,
       'group': 'Grup',
       'info': 'Info',
@@ -90,8 +91,11 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
     if (teks == 'database') tags = {
       'database': 'Database'
     }
+    if (teks == 'download') tags = {
+      'download': 'Downloader',
+    }
     if (teks == 'fun') tags = {
-      'fun': 'Fun',
+      'fun': 'fun',
     }
     if (teks == 'games') {
       if (!db.data.settings[conn.user.jid].game) {
@@ -141,8 +145,7 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       }
     }
     if (teks == 'list') { // kalo teks ga sesuai arrayMenu bakal nampilin ini
-      // bot wa bisnis?
-      let { isBusiness } = conn.isOnWhatsApp(conn.user.jid)
+      let { isBusiness } = conn.isOnWhatsApp(conn.user.jid) // bot wa bisnis?
       let arrayMenuFilter = arrayMenu.filter(v => !['list'].includes(v))
       if (isBusiness) {
         return m.reply(`
