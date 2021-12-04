@@ -24,6 +24,19 @@ node .
 
 ---------
 
+## UNTUK PENGGUNA TERMUX
+```
+$ pkg update && upgrade -y
+$ apt update && upgrade -y
+$ pkg install ffmpeg
+$ pkg install nodejs-lts
+$ pkg install git
+$ git clone https://github.com/melcanz/melcanz-bot.git
+$ cd melcanz-bot
+$ npm i
+$ npm start
+```
+---------
 ## UNTUK PENGGUNA HEROKU
 
 ### Instal Buildpack
