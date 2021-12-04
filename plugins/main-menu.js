@@ -141,11 +141,28 @@ let handler = async (m, { conn, usedPrefix: _p, text, isOwner, command }) => {
       }
     }
     if (teks == 'list') { // kalo teks ga sesuai arrayMenu bakal nampilin ini
-      m.reply(`
-┌「 Menu 」\n${arrayMenu.filter(v => !['list'].includes(v)).map(v => '├ ' + _p + command + ' ' + v).join`\n`}
-└────
-`.trim())
-      throw 0
+      // bot wa bisnis?
+      let { isBusiness } = conn.isOnWhatsApp(conn.user.jid)
+      let arrayMenuFilter = arrayMenu.filter(v => !['list'].includes(v))
+      if (isBusiness) {
+        return m.reply(`
+  ┌「 Menu 」\n${arrayMenuFilter.map(v => '├ ' + _p + command + ' ' + v).join`\n`}
+  └────
+  `.trim())
+      }
+      else {
+        let array = Object.keys(arrayMenuFilter).map(v => ({
+          title: arrayMenuFilter[v],
+          description: '',
+          rowId: `.m ${arrayMenuFilter[v]}`
+        }))
+        let button = {
+          buttonText: 'klik disini',
+          description: `hai @${m.sender.split`@`[0]}, klik untuk melihat daftar perintah`,
+          title: 'menu'
+        }
+        return conn.sendListM(m.chat, button, array, m)
+      }
     }
     let help = Object.values(global.plugins).filter(plugin => !plugin.disabled).map(plugin => {
       return {

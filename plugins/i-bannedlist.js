@@ -1,11 +1,11 @@
 let handler = async (m, { conn, isOwner }) => {
-    let chats = Object.entries(global.db.data.chats).filter(chat => chat[1].isBanned)
+    let chats = conn.chats.all().filter(v => v.jid.endsWith('g.us') && db.data.chats[v.jid].isBanned).map(v => v.jid)
     let users = Object.entries(global.db.data.users).filter(user => user[1].banned)
     let pesan = `
 ┌「 *daftar chat* 」
-│ total: ${chats.length} chat${chats ? '\n' + chats.map(([jid], i) => `
-├ ${i + 1}. ${conn.getName(jid) == undefined ? 'gk tau' : conn.getName(jid)}
-├ ${jid}
+│ total: ${chats.length} chat${chats ? '\n' + chats.map((v, i) => `
+├ ${i + 1}. ${conn.getName(v) == undefined ? 'gk tau' : conn.getName(v)}
+├ ${v}
 `.trim()).join('\n') : ''}
 └────
 ┌「 *daftar pengguna* 」

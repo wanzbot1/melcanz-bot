@@ -1,8 +1,9 @@
-let handler = async (m, { conn, isOwner }) => {
+let handler = async (m, { conn }) => {
     let sw = Object.entries(global.db.data.users).filter(v => v[1].sw)
+    let tosw = db.data.settings[conn.user.jid].tosw
     let pesan = `
-┌「 List Sw 」
-│ Total : ${sw.length} Users${sw ? '\n' + sw.map(([jid], i) => `
+┌「 *daftar sw* 」
+│ diterukan ke ${/g.us/.test(tosw) ? conn.getName(tosw) : '@' + tosw.split`@`[0]}${sw ? '\n' + sw.map(([jid], i) => `
 ├ ${i + 1}. @${jid.split`@`[0]}
 `.trim()).join('\n') : ''}
 └────

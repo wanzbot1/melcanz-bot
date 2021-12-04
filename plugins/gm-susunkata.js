@@ -12,7 +12,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     let res = await fetch(API('amel', '/game/susunkata', {}, 'apikey'))
     if (!res.ok) throw eror
     let json = await res.json()
-    if (json.status != 200) throw json
+    if (!json.status) throw json
     let caption = `
 ${json.result.soal}
 

@@ -12,7 +12,7 @@ let handler = async (m, { conn, usedPrefix }) => {
     let res = await fetch(API('amel', '/game/tebakkata', { id: conn.pickRandom(db.data.settings[conn.user.jid].playlist) }, 'apikey'))
     if (!res.ok) throw eror
     let json = await res.json()
-    if (json.status != 200) throw json
+    if (!json.status) throw json
     if (json.result.preview == null) {
         await conn.sendButton(m.chat, 'audio tidak ditemukan!', wm, 'Tebak Lagu', '.tebaklagu', m)
         throw 0

@@ -9,10 +9,10 @@ let handler = async (m, { conn, usedPrefix }) => {
         conn.reply(m.chat, 'belum dijawab!', conn.siapakahaku[id][0])
         throw false
     }
-    let res = await fetch(API('amel', '/game/tebakkata', {}, 'apikey'))
+    let res = await fetch(API('amel', '/game/siapakahaku', {}, 'apikey'))
     if (!res.ok) throw eror
     let json = await res.json()
-    if (json.status != 200) throw json
+    if (!json.status) throw json
     let caption = `
 ${json.result.soal}
 

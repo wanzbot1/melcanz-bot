@@ -12,7 +12,7 @@ let handler = async (m, { conn, usedPrefix }) => {
   let res = await fetch(API('amel', '/game/tebakgambar', {}, 'apikey'))
   if (!res.ok) throw eror
   let json = await res.json()
-  if (json.status != 200) throw json
+  if (!json.status) throw json
   let caption = `
     ${json.result.deskripsi}
 Waktu *${(timeout / 1000).toFixed(2)} detik*
