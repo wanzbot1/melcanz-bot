@@ -16,7 +16,7 @@
 * Unduh & Instal ImageMagick [`Klik Disini`](https://imagemagick.org/script/download.php)
 
 ```bash
-git clone https://github.com/melcanz/melcanz-bot
+git clone https://github.com/melcanz/melcanz-bot.git
 cd melcanz-bot
 npm i
 node .
